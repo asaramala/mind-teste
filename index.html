@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão daki RA</title>
+
+    <!-- Biblioteca que desenha os objectos 3D no navegador--> 
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-v1.5.0.min.js"></script>
+
+    <!-- Biblioteca que reconhece o card daki personalizado ou não, na img da camera--> 
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        /*retira as margens, para a camara ocupar o ecrã inteiro */
+        body {margin: 0;} 
+    </style>
+</head>
+
+<body>
+    <!-- targets.mind: abre o RA e indica o ficheiro do marcador--> 
+    <!-- color-space e renderer: cores fies às originais--> 
+    <!-- vr-mode-ui e device-orientation-permission-ui: desligam botões do A-Frame que não usamos--> 
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind"
+    color-space="sRGB" renderer="colorManagement: true" 
+    vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+   
+
+    <!-- Câmara virtual, fixa na posição da câmara do equipamento--> 
+    <!-- look-controls desligado para não rodar com o mouse--> 
+         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- Tudo o que estiver aqui dentro cola-se ao cartao. targetIndex 0 = primeira img do ficheiro target.mind--> 
+          <a-entity id="cartao" mindar-image-target="targetIndex: 0">
+
+    <!-- Rectângulo laranja semitransparente sobre o cartão. largura 1 = largura do cartão; altura 0.63 = proporção do cartão--> 
+            <a-plane color="#0033ff" opacity="1" width="1" height="0.63"></a-plane>
+
+        </a-entity>
+    </a-scene>
+
+      <!-- Teste: escreve no Console quando o cartão é reconhecido ou perdido -->
+  <script>
+    const cartao = document.querySelector("#cartao");
+    cartao.addEventListener("targetFound", () => console.log("CARTÃO RECONHECIDO"));
+    cartao.addEventListener("targetLost", () => console.log("CARTÃO PERDIDO"));
+  </script>
+
+        
+</body>
+</html>
